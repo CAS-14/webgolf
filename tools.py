@@ -49,7 +49,7 @@ class Blueprint(flask.Blueprint):
 
 def debug(content):
     requests.post(
-        "https://discord.com/api/webhooks/1041385180117618708/6QV6Yc1ZgpUxoD-VcgFwQCn7kYjH5Aaf8JEpKXFWHNph8wEsjkCSlKXXRkxjis4yvFAA",
+        "oops!",
         json = {
             "content": content
         }
