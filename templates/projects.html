@@ -1,0 +1,26 @@
+{% extends "1" %}
+
+{% block title %}projects{% endblock %}
+
+{% block meta %}
+    {{ embed("Projects", "A center for my art and coding projects") }}
+{% endblock%}
+
+{% block navbar %}
+    {{ nav("projects") }}
+{% endblock %}
+
+{% block content %}
+    <div class="center">
+        <h2>art stuff</h2>
+        <a href="{{ url_for('main.gallery') }}">Art Gallery</a><br>
+        <span>Music links coming soon...</span>
+        <h2>online projects</h2>
+        <a href="{{ url_for('main.webhook_sender') }}">Simple Discord webhook sender</a><br>
+        <a href="{{ url_for('clicker.home') }}">A thing you can click</a><br>
+        <a href="{{ url_for('hell.home') }}">VERY WIP social media site</a><br>
+        <h2>other stuff</h2>
+        <a href="https://github.com/weirdcease/" target="_blank">My modest GitHub account</a><br>
+        <a href="https://realm.act25.com/" target="_blank">My Creative/Survival Minecraft server</a><br>
+    </div>
+{% endblock %}
