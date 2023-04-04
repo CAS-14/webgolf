@@ -1,0 +1,28 @@
+{% extends "main/base.html" %}
+
+{% block title %}error {{ code }}{% endblock %}
+
+{% block meta %}
+    {{ embed("error {{ code }}", message) }}
+{% endblock %}
+
+{% if code == "404" %}
+    {% block head %}
+        <script src="{{ url_for('static', filename='main/js/404.js') }}"></script>
+    {% endblock %}
+{% endif %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="main">
+            <div class="box-small">
+                <h1>error {{ code }}</h1>
+                <p id="visitMessage">{{ message }}</p>
+                <div>
+                    <a href="{{ url_for('main.home') }}">go to the home page</a><br/>
+                    <a href="http://google.com">leave site</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

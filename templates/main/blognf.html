@@ -1,0 +1,15 @@
+{% extends "main/page.html" %}
+
+{% block title %}{{ post_id }} Not Found - Blog{% endblock %}
+
+{% block meta %}
+    {{ embed("{{ post_id }} Not Found", "This blog post does not exist.") }}
+{% endblock %}
+
+{% block navbar %}
+    {{ navback("blog") }}
+{% endblock %}
+
+{% block content %}
+    <h2>Post {{ post_id }} not found!</h2>
+{% endblock %}

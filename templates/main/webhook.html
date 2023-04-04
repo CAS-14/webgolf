@@ -1,0 +1,28 @@
+{% extends "main/page.html" %}
+
+{% block title %}discord webhook sender{% endblock %}
+
+{% block meta %}
+    {{ embed("Discord Webhook Sender", "You can use this tool to send messages via Discord webhooks.") }}
+{% endblock %}
+
+{% block head %}
+    <script src="{{ url_for('static', filename='main/js/webhook.js') }}"></script>
+{% endblock %}
+
+{% block navbar %}
+    {{ navback("projects") }}
+{% endblock %}
+
+{% block content %}
+    <h2>discord webhook tool</h2>
+    <p>With this tool, you can send messages individually using a Discord webhook URL.</p>
+    <div id="webhook_sender">
+        <input type="text" id="webhook_url" class="wide-input" placeholder="your webhook url"><br>
+        <textarea id="message" class="wide-input" style="overflow:scroll" placeholder="message to send"></textarea>
+        <button type="button" onclick="send();">Send!</button>
+        <button type="button" onclick="clearbox();">Clear</button>
+        <input type="checkbox" id="toggle_clear" checked> clear textbox on send<br>
+        <span id="output_txt"></span>
+    </div>
+{% endblock %}

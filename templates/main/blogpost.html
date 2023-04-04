@@ -1,0 +1,49 @@
+{% extends "main/page.html" %}
+
+{% block title %}{{ post[0] }} - Blog{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main/css/blog.css') }}">
+{% endblock %}
+
+{% block meta %}
+    {{ embed(post[0], post[2]) }}
+{% endblock %}
+
+{% block navbar %}
+    {{ navback("blog") }}
+{% endblock %}
+
+{% block content %}
+    <div class="blog-post">
+        <div class="post-title">
+            <h1>{{ post[0] }}</h2>
+            <span>{{ post[1]|time("%B %-d, %Y") }}</span>
+        </div>
+        {% for paragraph in post[2]|split %}
+            <p>{{ paragraph }}</p>
+        {% endfor %}
+        <h2>leave a comment</h2>
+        <form method="post" action="{{ url_for('main.create_comment', parent_post=post[4]) }}">
+            <label for="author">Name:</label>
+            <input type="text" name="author" placeholder="anonymous" maxlength="20"></input>
+            <br>
+            <textarea name="body" class="wide-input" placeholder="leave a comment here" rows="3" minlength="10" maxlength="500"></textarea>
+            <br>
+            <button type="submit">comment</button>
+        </form>
+        <h3>{{ post[3] }} comments</h3>
+        <div class="comments">
+            {% for comment in comments %}
+                <hr>
+                <div class="comment">
+                    <div class="comment-info">
+                        <span class="comment-author">{{ comment[1] }}</span>
+                        <span>{{ comment[0]|time("%b %-d %Y %-I:%M %p") }}</span>
+                    </div>
+                    <span>{{ comment[2] }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

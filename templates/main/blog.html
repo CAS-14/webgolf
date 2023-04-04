@@ -1,0 +1,31 @@
+{% extends "main/page.html" %}
+
+{% block title %}blog{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main/css/blog.css') }}">
+{% endblock %}
+
+{% block meta %}
+    {{ embed("Blog", "COMING SOON") }}
+{% endblock %}
+
+{% block navbar %}
+    {{ nav("blog") }}
+{% endblock %}
+
+{% block content %}
+    <h2>blog</h2>
+    <p>Welcome to my blog, where I post things sometimes. Click on a post below to view it or leave a comment. This system is a work in progress.</p>
+    <div>
+        {% for post in posts %}
+        <a class="blog-entry" href="{{ url_for('main.blogpost', post_id=post[0]) }}">
+            <span class="entry-title">{{ post[1] }}</span>
+            <div class="comments-count">
+                <span>{{ post[3] }}</span>
+            </div>
+            <span>{{ post[2]|time("%b %-d, %Y") }}</span>
+        </a>
+    {% endfor %}
+    </div>
+{% endblock %}

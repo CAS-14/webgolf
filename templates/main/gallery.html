@@ -1,0 +1,39 @@
+{% extends "main/page.html" %}
+
+{% block title %}GALLERY{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main/css/gallery.css') }}">
+{% endblock %}
+
+{% block meta %}
+    {{ embed("GALLERY", "My art gallery, more stuff on the way.") }}
+{% endblock %}
+
+{% block navbar %}
+    {{ navback("projects") }}
+{% endblock %}
+
+{% block content %}
+    <!-- images [0-2] id, title, url -->
+    <h2>G A L L E R Y</h2>
+    <p>Welcome to my art gallery. Here you can see my glitch art and photography. More stuff coming soon. You can click the images to view them in more detail and read about them. If you use an image as a social media banner or something else, please give me credit.</p>
+    <div class="gallery">
+        <div class="gallery-row">
+            {% set row_count = namespace(value=0) %}
+            {% for image in images %}
+                <div class="image-container">
+                    <a class="nolink" href="{{ url_for('main.gallery_image', image_id=image[0]) }}">
+                        <img class="gallery-image" src="{{ image[2] }}" title="{{ image[1] }}">
+                    </a>
+                </div>
+                {% set row_count.value = row_count.value + 1 %}
+                {% if row_count.value == 3 and images.index(image) < images|length %}
+                    </div>
+                    <div class="gallery-row">
+                    {% set row_count.value = 0 %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

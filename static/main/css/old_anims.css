@@ -1,0 +1,75 @@
+@keyframes resize {
+
+    0%,
+    100% {
+        font-size: 8px;
+    }
+
+    50% {
+        font-size: 14px;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes rainbow {
+
+    0%,
+    100% {
+        color: rgb(255, 0, 0);
+    }
+
+    8% {
+        color: rgb(255, 127, 0);
+    }
+
+    16% {
+        color: rgb(255, 255, 0);
+    }
+
+    25% {
+        color: rgb(127, 255, 0);
+    }
+
+    33% {
+        color: rgb(0, 255, 0);
+    }
+
+    41% {
+        color: rgb(0, 255, 127);
+    }
+
+    50% {
+        color: rgb(0, 255, 255);
+    }
+
+    58% {
+        color: rgb(0, 127, 255);
+    }
+
+    66% {
+        color: rgb(0, 0, 255);
+    }
+
+    75% {
+        color: rgb(127, 0, 255);
+    }
+
+    83% {
+        color: rgb(255, 0, 255);
+    }
+
+    91% {
+        color: rgb(255, 0, 127);
+    }
+}

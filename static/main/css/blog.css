@@ -1,0 +1,43 @@
+/* blog main page */
+
+.blog-entry, .blog-entry * {
+    display: flex;
+    flex-direction: row;
+}
+
+.entry-title {
+    flex: 1;
+}
+
+.comments-count {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* blogposts */
+
+.blog-post {
+    margin: 20px 0;
+}
+
+.post-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-title h1 {
+    margin: 0px;
+}
+
+.comment-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.comment-author {
+    font-style: italic;
+    padding-right: 10px;
+}
+

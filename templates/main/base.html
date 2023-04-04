@@ -1,0 +1,27 @@
+{% macro embed(title, description) %}
+    <meta content="weirdcease: {{ title }}" property="og:title" />
+    <meta content="{{ description }}" property="og:description" />
+{% endmacro %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %} - weirdcease</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main/css/style.css' ) }}">
+    <script src="https://kit.fontawesome.com/0988a06e9d.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='main/images/logo.png') }}"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    {% block meta %}
+        <meta content="weirdcease's website" property="og:title" />
+        <meta content="On this site you can learn about me, my interests, and check out some of my stuff." property="og:description" />
+    {% endblock %}
+    <meta content="{{ url_for('static', filename='main/images/triangle-logo.png') }}" property="og:image" />
+    <meta content="." property="og:url" />
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+</body>
+</html>

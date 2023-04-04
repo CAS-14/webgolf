@@ -1,0 +1,216 @@
+@font-face {
+    font-family: Alagard;
+    src: url("/static/main/font/alagard.ttf");
+}
+
+@keyframes pulse-accent {
+    0%, 100% {
+        background-color: var(--gray);
+        color: var(--accent);
+    }
+    50% {
+        background-color: var(--accent);
+        color: var(--black);
+    }
+}
+
+@keyframes pulse-opacity {
+    0%, 100% {
+        opacity: 100%;
+    }
+    50% {
+        opacity: 50%;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+:root {
+    --accent: #77ff00;
+    --gray: #333;
+    --background: #4d4d4d url("https://media.act25.com/themes/acidgreen.png");
+    --transparent: rgba(0, 0, 0, 0.7);
+    --white: #fff;
+    --black: #000;
+}
+
+::selection {
+    background: var(--accent);
+    color: var(--black);
+}
+
+html {
+    height: 100%;
+    font-family: Alagard;
+}
+
+body {
+    background:
+        linear-gradient(rgba(0, 30, 0, 0.4), rgba(0, 30, 0, 0.4)),
+        var(--background);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    overflow-y: hidden;
+    margin: 0;
+}
+
+span, p, a, b, i, h1, h2, h3, ul, li, ol, input, textarea, button, label, select, option {
+    font-family: Alagard;
+    color: var(--accent);
+}
+
+a:not(.nolink):hover {
+    background-color: var(--accent);
+    color: var(--black);
+}
+
+h1, h2, h3 {
+    font-weight: normal;
+    font-style: italic;
+}
+
+ul {
+	list-style: circle;
+}
+
+hr {
+    background-color: var(--accent);
+    border: none;
+    height: 1px;
+}
+
+input, button, textarea, select {
+    background-color: var(--gray);
+}
+
+input {
+    margin-top: 5px;
+}
+
+.wrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.fillheight {
+    height: 100%;
+}
+
+.headbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.center {
+    text-align: center;
+}
+
+.topnav {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.topnav a {
+    background-color: var(--gray);
+    flex-basis: 0px;
+    flex-grow: 1;
+    color: var(--accent);
+    text-align: center;
+    padding: 8px 0;
+    text-decoration: none;
+    font-size: 17px;
+    border-bottom: solid var(--accent) 2px;
+}
+
+.topnav a.active {
+    background-color: var(--transparent);
+    border: solid var(--accent) 2px;
+    border-bottom: none;
+}
+
+.topnav a:hover:not(.active) {
+    animation: pulse-accent 1s infinite ease-in-out;
+}
+
+.box {
+    width: 600px;
+    padding: 0 20px;
+    background-color: var(--transparent);
+    background-size: 100%;
+    border: solid var(--accent) 2px;
+    border-top: none;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: 10px;
+    scrollbar-track-color: var(--transparent);
+    scrollbar-color: var(--accent);
+}
+
+.box-small {
+    width: 400px;
+    padding: 15px;
+    background-color: var(--transparent);
+    background-size: 100%;
+    border: solid var(--accent);
+    border-width: 2px;
+    text-align: center;
+}
+
+.box-small h1 {
+    margin-top: 0px;
+}
+
+.ascii-art {
+    text-decoration: none;
+    white-space: pre;
+    font-family: monospace;
+    font-size: 10px;
+}
+
+.ascii-art:hover {
+    animation: pulse-opacity 1s infinite ease-in-out;
+}
+
+.logo {
+    animation: spin 2s infinite linear;
+}
+
+.bottom-text {
+    font-size: 12px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    align-self: center;
+}
+
+.wide-input {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.socials td:not(.padright) {
+    padding-right: 3px;
+    text-align: center;
+}
+
+.padright {
+    padding-right: 10px !important;
+}
