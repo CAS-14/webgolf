@@ -18,9 +18,9 @@
     <div class="blog-post">
         <div class="post-title">
             <h1>{{ post[0] }}</h2>
-            <span>{{ post[1]|time("%B %-d, %Y") }}</span>
+            <span>{{ post[1]|t("%B %-d, %Y") }}</span>
         </div>
-        {% for paragraph in post[2]|split %}
+        {% for paragraph in post[2]|s %}
             <p>{{ paragraph }}</p>
         {% endfor %}
         <h2>leave a comment</h2>
@@ -39,7 +39,7 @@
                 <div class="comment">
                     <div class="comment-info">
                         <span class="comment-author">{{ comment[1] }}</span>
-                        <span>{{ comment[0]|time("%b %-d %Y %-I:%M %p") }}</span>
+                        <span>{{ comment[0]|t("%b %-d %Y %-I:%M %p") }}</span>
                     </div>
                     <span>{{ comment[2] }}</span>
                 </div>
