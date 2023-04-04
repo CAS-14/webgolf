@@ -1,87 +1,44 @@
-from flask import request, redirect, url_for, send_file, g, flash, session
+from flask import request,redirect,url_for,send_file,g,flash,session,Blueprint,render_template
 from werkzeug.security import check_password_hash
-import json
-from datetime import datetime
-import re
-import random
-
-import tools
-
-CENSORS = {}
-with open(tools.util("censors.json"), "r") as f:
-    CENSORS = json.load(f)
-
-main = tools.Blueprint("main")
-
-DB_ROUTES = [
-    "main.blog",
-    "main.blogpost",
-    "main.create_comment",
-    "main.create_post",
-    "main.gallery",
-    "main.gallery_image"
-]
-
-ADMIN_USER = "cas"
-ADMIN_HASH = "pbkdf2:sha256:260000$GZ0CRuR4JfMR64jo$7028605ea9480176073c7bf33503dd0f390c6900217bc689481b106eb1f2644c" # fakepass
-
-# limiter = tools.limiter
-
-@main.before_request
-def before_request():
-    if request.endpoint in DB_ROUTES:
-        g.db = tools.get_db("main.db")
-        g.cur = g.db.cursor()
-
-@main.route("/")
-@main.route("/home")
-def home():
-    return main.render("home.html")
-
-@main.route("/about")
-def about():
-    return main.render("about.html")
-
-@main.route("/blog")
-def blog():
-    posts = g.cur.execute(
-        "SELECT id, title, time, comments FROM blogposts ORDER BY id DESC;"
-    ).fetchall()
-
-    return main.render("blog.html", posts=posts)
-
-@main.route("/blog/post/<post_id>")
-def blogpost(post_id):
-    post = g.cur.execute(
-        "SELECT title, time, body, comments, id FROM blogposts WHERE id = ?;", 
-        (post_id,)
-    ).fetchone()
+import re,random,datetime as d,sqlite3
+m=Blueprint("m",__name__)
+@m.before_request
+def b():
+    if not hasattr(g,"d"):g.d=sqlite3.connect("i/m.db")
+    g.c=g.d.cursor()
+@m.route("/")
+def h():return render_template("h")
+@m.route("/a")
+def a():return render_template("a")
+@m.route("/b")
+def b():return render_template("b",posts=g.c.execute("SELECT i,n,t,c FROM b ORDER BY i DESC").fetchall())
+@m.route("/p/<i>")
+def blogpost(i):
+    r=post=g.c.execute("SELECT n,t,b,c,i FROM b WHERE i=?",(i,)).fetchone()
     
-    if post:
-        comments = g.cur.execute(
+    if r:
+        comments = g.c.execute(
             "SELECT time, author, body FROM comments WHERE parent = ? ORDER BY id DESC;", 
-            (post_id,)
+            (i,)
         ).fetchall()
 
-        return main.render("blogpost.html", post=post, comments=comments)
+        return render_template("blogpost.html", post=r, comments=comments)
 
     else:
-        return main.render("blognf.html", post_id=post_id)
+        return render_template("blognf.html", post_id=i)
 
-@main.route("/blog/post/<parent_post>/create_comment", methods=["POST"])
+@m.route("/blog/post/<parent_post>/create_comment", methods=["POST"])
 def create_comment(parent_post):
     author = request.form.get("author")
     if not author: author = "anonymous"
     body = request.form.get("body")
     
     if body:
-        for word in CENSORS:
-            body = re.sub(word, "*" * len(word), body, flags=re.IGNORECASE)
 
-        time = int(datetime.timestamp(datetime.now()))
+        time = int(d.datetime.timestamp(d.datetime.now()))
 
         try:
-            g.cur.execute(
+            g.c.execute(
                 "INSERT INTO comments (parent, author, body, time) VALUES (?, ?, ?, ?);",
                 (parent_post, author, body, time)
             )
@@ -90,26 +47,26 @@ def create_comment(parent_post):
             pass
 
         else:
-            g.cur.execute(
+            g.c.execute(
                 "UPDATE posts SET comments = comments + 1 WHERE id = ?;",
                 (parent_post,)
             )
 
     return redirect(url_for("main.blogpost", post_id=parent_post))
 
-@main.route("/blog/create_post", methods=["POST"])
+@m.route("/blog/create_post", methods=["POST"])
 def create_post():
     token = request.headers.get("token")
 
-    ADMIN_TOKEN = tools.SECRETS["blog_post_token"]
+    ADMIN_TOKEN = "not_the_real_token"
 
     if token == ADMIN_TOKEN:
         title = request.headers.get("title")
         body = request.headers.get("body")
         
-        time = int(datetime.timestamp(datetime.now()))
+        time = int(d.datetime.timestamp(d.datetime.now()))
 
-        g.cur.execute(
+        g.c.execute(
             "INSERT INTO posts (title, body, time, comments) VALUES (?, ?, ?, ?);",
             (title, body, time, 0)
         )
@@ -119,54 +76,54 @@ def create_post():
     else:
         return "Authentication failed!"
 
-@main.route("/projects")
+@m.route("/projects")
 def projects():
-    return main.render("projects.html")
+    return render_template("projects.html")
 
-@main.route("/projects/gallery")
+@m.route("/projects/gallery")
 def gallery():
-    images = g.cur.execute(
+    images = g.c.execute(
         "SELECT id, title, url FROM artwork;"
     ).fetchall()
     random.shuffle(images)
 
-    return main.render("gallery.html", images=images)
+    return render_template("gallery.html", images=images)
 
-@main.route("/projects/gallery/<image_id>")
+@m.route("/projects/gallery/<image_id>")
 def gallery_image(image_id):
-    image = g.cur.execute(
+    image = g.c.execute(
         "SELECT title, url, description FROM artwork WHERE id = ?;",
         (image_id,)
     ).fetchone()
     
     if not image:
-        return main.render("error.html", code="404")
+        return render_template("error.html", code="404")
 
-    return main.render("galleryimg.html", image=image)
+    return render_template("galleryimg.html", image=image)
 
-@main.route("/projects/webhook")
+@m.route("/projects/webhook")
 def webhook_sender():
-    return main.render("webhook.html")
+    return render_template("webhook.html")
 
-@main.route("/force404")
+@m.route("/force404")
 def force404():
-    return main.render("error.html", code="404", message="Balls")
+    return render_template("error.html", code="404", message="Balls")
 
-@main.route("/keybase.txt")
+@m.route("/keybase.txt")
 def keybase():
     return send_file("static/keybase.txt")
 
-@main.route("/shhh")
-@main.route("/login")
+@m.route("/shhh")
+@m.route("/login")
 def login():
-    return main.render("login.html")
+    return render_template("login.html")
 
-@main.route("/login_handler", methods=["POST"])
+@m.route("/login_handler", methods=["POST"])
 def login_handler():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    if username == ADMIN_USER and password and check_password_hash(ADMIN_HASH, password):
+    if username == "cas" and password and check_password_hash("pbkdf2:sha256:260000$GZ0CRuR4JfMR64jo$7028605ea9480176073c7bf33503dd0f390c6900217bc689481b106eb1f2644c", password):
         session.clear()
         session["user_id"] = "cas"
 
@@ -175,43 +132,43 @@ def login_handler():
     flash("Incorrect credentials.")
     return redirect(url_for("main.login"))
 
-@main.route("/logout")
+@m.route("/logout")
 def logout():
     session.clear()
     flash("You have been logged out.")
     return redirect(url_for("main.login"))
 
-@main.route("/secret")
+@m.route("/secret")
 def secret():
     if "user_id" in session and session["user_id"] == "cas":
-        return main.render("secret.html")
+        return render_template("secret.html")
     
     flash("You must login to view that page.")
     return redirect(url_for("main.login"))
 
-@main.errorhandler(403)
+@m.errorhandler(403)
 def forbidden(e):
-    return main.render("error.html", code="403", message="Access denied."), 403
+    return render_template("error.html", code="403", message="Access denied."), 403
 
-@main.errorhandler(404)
+@m.errorhandler(404)
 def not_found(e):
-    return main.render("error.html", code="404", message="Page not found!"), 404
+    return render_template("error.html", code="404", message="Page not found!"), 404
 
-@main.errorhandler(405)
+@m.errorhandler(405)
 def internal_error(e):
-    return main.render("error.html", code="405", message="This method is not allowed for that URL."), 405
+    return render_template("error.html", code="405", message="This method is not allowed for that URL."), 405
 
-@main.errorhandler(410)
+@m.errorhandler(410)
 def gone(e):
-    return main.render("error.html", code="410", message="This page was moved or deleted!"), 410
+    return render_template("error.html", code="410", message="This page was moved or deleted!"), 410
 
-@main.errorhandler(500)
+@m.errorhandler(500)
 def internal_error(e):
-    return main.render("error.html", code="500", message="Internal server error, please tell weirdcease#0001."), 500
+    return render_template("error.html", code="500", message="Internal server error, please tell weirdcease#0001."), 500
 
-@main.after_request
+@m.after_request
 def after_request(response):
     if hasattr(g, "db"):
-        g.db.commit()
-        g.db.close()
+        g.d.commit()
+        g.d.close()
     return response
